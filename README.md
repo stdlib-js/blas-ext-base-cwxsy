@@ -51,38 +51,32 @@ This BLAS extension implements the operation
 
 <!-- /.intro -->
 
+<section class="installation">
 
+## Installation
+
+```bash
+npm install @stdlib/blas-ext-base-cwxsy
+```
+
+Alternatively,
+
+-   To load the package in a website via a `script` tag without installation and bundlers, use the [ES Module][es-module] available on the [`esm`][esm-url] branch (see [README][esm-readme]).
+-   If you are using Deno, visit the [`deno`][deno-url] branch (see [README][deno-readme] for usage intructions).
+-   For use in Observable, or in browser/node environments, use the [Universal Module Definition (UMD)][umd] build available on the [`umd`][umd-url] branch (see [README][umd-readme]).
+
+The [branches.md][branches-url] file summarizes the available branches and displays a diagram illustrating their relationships.
+
+To view installation and usage instructions specific to each branch build, be sure to explicitly navigate to the respective README files on each branch, as linked to above.
+
+</section>
 
 <section class="usage">
 
 ## Usage
 
-To use in Observable,
-
 ```javascript
-cwxsy = require( 'https://cdn.jsdelivr.net/gh/stdlib-js/blas-ext-base-cwxsy@umd/browser.js' )
-```
-
-To vendor stdlib functionality and avoid installing dependency trees for Node.js, you can use the UMD server build:
-
-```javascript
-var cwxsy = require( 'path/to/vendor/umd/blas-ext-base-cwxsy/index.js' )
-```
-
-To include the bundle in a webpage,
-
-```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/blas-ext-base-cwxsy@umd/browser.js"></script>
-```
-
-If no recognized module system is present, access bundle contents via the global scope:
-
-```html
-<script type="text/javascript">
-(function () {
-    window.cwxsy;
-})();
-</script>
+var cwxsy = require( '@stdlib/blas-ext-base-cwxsy' );
 ```
 
 #### cwxsy( N, x, strideX, y, strideY, w, strideW )
@@ -204,16 +198,11 @@ cwxsy.ndarray( 3, x, 1, x.length-3, y, 1, y.length-3, w, 1, w.length-3 );
 
 <!-- eslint no-undef: "error" -->
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<body>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/random-array-discrete-uniform@umd/browser.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/array-complex64@umd/browser.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/console-log-each@umd/browser.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/stdlib-js/blas-ext-base-cwxsy@umd/browser.js"></script>
-<script type="text/javascript">
-(function () {
+```javascript
+var discreteUniform = require( '@stdlib/random-array-discrete-uniform' );
+var Complex64Array = require( '@stdlib/array-complex64' );
+var logEach = require( '@stdlib/console-log-each' );
+var cwxsy = require( '@stdlib/blas-ext-base-cwxsy' );
 
 var opts = {
     'dtype': 'float32'
@@ -227,11 +216,6 @@ var w = new Complex64Array( wbuf.buffer );
 
 cwxsy( x.length, x, 1, y, 1, w, 1 );
 logEach( '(%s) - (%s) = %s', x, y, w );
-
-})();
-</script>
-</body>
-</html>
 ```
 
 </section>
@@ -240,7 +224,164 @@ logEach( '(%s) - (%s) = %s', x, y, w );
 
 <!-- C interface documentation. -->
 
+* * *
 
+<section class="c">
+
+## C APIs
+
+<!-- Section to include introductory text. Make sure to keep an empty line after the intro `section` element and another before the `/section` close. -->
+
+<section class="intro">
+
+</section>
+
+<!-- /.intro -->
+
+<!-- C usage documentation. -->
+
+<section class="usage">
+
+### Usage
+
+```c
+#include "stdlib/blas/ext/base/cwxsy.h"
+```
+
+#### stdlib_strided_cwxsy( N, \*X, strideX, \*Y, strideY, \*W, strideW )
+
+Subtracts elements of a single-precision complex floating-point strided array `Y` from the corresponding elements of a single-precision complex floating-point strided array `X` and assigns the results to elements in a single-precision complex floating-point strided array `W`.
+
+```c
+#include "stdlib/complex/float32/ctor.h"
+
+const float x[] = { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f };
+const float y[] = { 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f };
+float w[] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+
+stdlib_strided_cwxsy( 4, (const stdlib_complex64_t *)x, 1, (const stdlib_complex64_t *)y, 1, (stdlib_complex64_t *)w, 1 );
+```
+
+The function accepts the following arguments:
+
+-   **N**: `[in] CBLAS_INT` number of indexed elements.
+-   **X**: `[in] stdlib_complex64_t*` first input array.
+-   **strideX**: `[in] CBLAS_INT` stride length for `X`.
+-   **Y**: `[in] stdlib_complex64_t*` second input array.
+-   **strideY**: `[in] CBLAS_INT` stride length for `Y`.
+-   **W**: `[out] stdlib_complex64_t*` output array.
+-   **strideW**: `[in] CBLAS_INT` stride length for `W`.
+
+```c
+void stdlib_strided_cwxsy( const CBLAS_INT N, const stdlib_complex64_t *X, const CBLAS_INT strideX, const stdlib_complex64_t *Y, const CBLAS_INT strideY, stdlib_complex64_t *W, const CBLAS_INT strideW );
+```
+
+<!--lint disable maximum-heading-length-->
+
+#### stdlib_strided_cwxsy_ndarray( N, \*X, strideX, offsetX, \*Y, strideY, offsetY, \*W, strideW, offsetW )
+
+<!--lint enable maximum-heading-length-->
+
+Subtracts elements of a single-precision complex floating-point strided array `Y` from the corresponding elements of a single-precision complex floating-point strided array `X` and assigns the results to elements in a single-precision complex floating-point strided array `W` using alternative indexing semantics.
+
+```c
+#include "stdlib/complex/float32/ctor.h"
+
+const float x[] = { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f };
+const float y[] = { 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f };
+float w[] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+
+stdlib_strided_cwxsy_ndarray( 4, (const stdlib_complex64_t *)x, 1, 0, (const stdlib_complex64_t *)y, 1, 0, (stdlib_complex64_t *)w, 1, 0 );
+```
+
+The function accepts the following arguments:
+
+-   **N**: `[in] CBLAS_INT` number of indexed elements.
+-   **X**: `[in] stdlib_complex64_t*` first input array.
+-   **strideX**: `[in] CBLAS_INT` stride length for `X`.
+-   **offsetX**: `[in] CBLAS_INT` starting index for `X`.
+-   **Y**: `[in] stdlib_complex64_t*` second input array.
+-   **strideY**: `[in] CBLAS_INT` stride length for `Y`.
+-   **offsetY**: `[in] CBLAS_INT` starting index for `Y`.
+-   **W**: `[out] stdlib_complex64_t*` output array.
+-   **strideW**: `[in] CBLAS_INT` stride length for `W`.
+-   **offsetW**: `[in] CBLAS_INT` starting index for `W`.
+
+```c
+void stdlib_strided_cwxsy_ndarray( const CBLAS_INT N, const stdlib_complex64_t *X, const CBLAS_INT strideX, const CBLAS_INT offsetX, const stdlib_complex64_t *Y, const CBLAS_INT strideY, const CBLAS_INT offsetY, stdlib_complex64_t *W, const CBLAS_INT strideW, const CBLAS_INT offsetW );
+```
+
+</section>
+
+<!-- /.usage -->
+
+<!-- C API usage notes. Make sure to keep an empty line after the `section` element and another before the `/section` close. -->
+
+<section class="notes">
+
+</section>
+
+<!-- /.notes -->
+
+<!-- C API usage examples. -->
+
+<section class="examples">
+
+### Examples
+
+```c
+#include "stdlib/blas/ext/base/cwxsy.h"
+#include "stdlib/complex/float32/ctor.h"
+#include "stdlib/complex/float32/real.h"
+#include "stdlib/complex/float32/imag.h"
+#include <stdio.h>
+
+int main( void ) {
+    // Create strided arrays:
+    const stdlib_complex64_t x[] = {
+        stdlib_complex64( 1.0f, 2.0f ),
+        stdlib_complex64( 3.0f, 4.0f ),
+        stdlib_complex64( 5.0f, 6.0f ),
+        stdlib_complex64( 7.0f, 8.0f )
+    };
+    const stdlib_complex64_t y[] = {
+        stdlib_complex64( 2.0f, 3.0f ),
+        stdlib_complex64( 4.0f, 5.0f ),
+        stdlib_complex64( 6.0f, 7.0f ),
+        stdlib_complex64( 8.0f, 9.0f )
+    };
+    stdlib_complex64_t w[] = {
+        stdlib_complex64( 0.0f, 0.0f ),
+        stdlib_complex64( 0.0f, 0.0f ),
+        stdlib_complex64( 0.0f, 0.0f ),
+        stdlib_complex64( 0.0f, 0.0f )
+    };
+
+    // Specify the number of indexed elements:
+    const int N = 4;
+
+    // Specify strides:
+    const int strideX = 1;
+    const int strideY = 1;
+    const int strideW = 1;
+
+    // Subtract elements of `y` from the corresponding elements of `x` and assign the results to elements in `w`:
+    stdlib_strided_cwxsy( N, x, strideX, y, strideY, w, strideW );
+
+    // Print the result:
+    for ( int i = 0; i < N; i++ ) {
+        printf( "w[ %i ] = %f + %fi\n", i, stdlib_complex64_real( w[ i ] ), stdlib_complex64_imag( w[ i ] ) );
+    }
+}
+```
+
+</section>
+
+<!-- /.examples -->
+
+</section>
+
+<!-- /.c -->
 
 <!-- Section for related `stdlib` packages. Do not manually edit this section, as it is automatically populated. -->
 
@@ -322,7 +463,7 @@ Copyright &copy; 2016-2026. The Stdlib [Authors][stdlib-authors].
 
 [stdlib-license]: https://raw.githubusercontent.com/stdlib-js/blas-ext-base-cwxsy/main/LICENSE
 
-[@stdlib/array/complex64]: https://github.com/stdlib-js/array-complex64/tree/umd
+[@stdlib/array/complex64]: https://github.com/stdlib-js/array-complex64
 
 [mdn-typed-array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
 
